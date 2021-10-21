@@ -1,7 +1,7 @@
 """ Manage All the Program """
 
 # imports
-
+from classification import classify, definePaths
 
 # input paths
 mainInputPath = r'data\input'
@@ -13,4 +13,12 @@ mainOutputPath = r'data\output'
 
 # Coordinator
 def coordinate():
-    a
+    # apply binary classification
+    # provide paths
+    definePaths(mainInputPath, mainOutputPath)
+    # with id3
+    classify('id3')
+    # with CART
+    classify('cart')
+    # with c4.5
+    classify('c45')
