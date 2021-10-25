@@ -2,6 +2,7 @@
 
 # imports
 from classification import classify, definePaths
+import timeit
 
 # input paths
 mainInputPath = r'data\input'
@@ -13,12 +14,18 @@ mainOutputPath = r'data\output'
 
 # Coordinator
 def coordinate():
+    # time init
+    tic = timeit.default_timer()
     # apply binary classification
     # provide paths
     definePaths(mainInputPath, mainOutputPath)
-    # with id3
-    classify('id3')
-    # with CART
-    classify('cart')
-    # with c4.5
-    classify('c45')
+    # CART
+    classify('CART')
+    # ID3
+    classify('ID3')
+    # C45
+    classify('C4.5')
+    # time end
+    toc = timeit.default_timer()
+    elapsed = toc-tic
+    print(f'Time elapsed is aproximately {elapsed} seconds o {elapsed/60} minutes')  # seconds
