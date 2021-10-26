@@ -21,7 +21,7 @@ def run_tree(X_train, X_test, y_train, y_test, algorithm, randomState=100):
     df = X_train.assign(Decision=y_train.astype(str).values)
     # decision tree
     config = {'algorithm': algorithm,
-              'enableParallelism': True, 'max_depth': 7, 'num_cores': 4}
+              'enableParallelism': True, 'max_depth': 7, 'num_cores': 4} # max depth not working on 26/10/2021, due to library bug
     # fit train
     model = chef.fit(df, config)
     # predict
@@ -31,7 +31,7 @@ def run_tree(X_train, X_test, y_train, y_test, algorithm, randomState=100):
         prediction = chef.predict(model, newInstance)
         y_pred_prob_list.append(float(prediction))
     # y pred categorical
-    y_pred_categ_list = list( map(lambda a : 0 if a < 0.5 else 1 , y_pred_prob_list) )
+    y_pred_categ_list = list( map(lambda a : 1 if a > 0.5 else 0, y_pred_prob_list) )
     # results    
     resultDict = {}
     # save test y pred

@@ -8,6 +8,8 @@ from sklearn import model_selection as ms
 from tree import run_tree
 from writeToFile import writeTextFile
 from Graph import graphCurve
+from imblearn.over_sampling import SMOTE
+from collections import Counter
 
 
 # define paths
@@ -30,9 +32,13 @@ def classify(algorithm, nFolds=10, randomSeed=100):
         # read csv
         df = pd.read_csv(info[1], engine='c')
         # only features
-        X = df.iloc[:, 1: len(df.columns)]
+        X_imbalance = df.iloc[:, 1: len(df.columns)]
         # only target
-        y = df.iloc[:, 0]
+        y_imbalance = df.iloc[:, 0]
+        # balance classes with sampling
+        smt = SMOTE()
+        X, y = smt.fit_resample(X_imbalance, y_imbalance)
+        print(Counter(y))
         # stratified cross validation
         skf = ms.StratifiedKFold(
             n_splits=nFolds, random_state=randomSeed, shuffle=True)
@@ -101,7 +107,10 @@ def classify(algorithm, nFolds=10, randomSeed=100):
         plotName = f'{info[0]}'
         function1 = 'ROC'
         function2 = 'PrecRecall'
+        function3= 'confMatrix'
         # auc
         graphCurve(results['y_true'], results['y_pred_prob_list'], algorithm, function1, info[0], definePaths.baseOutPath)
         # prec vs recall
         graphCurve(results['y_true'], results['y_pred_prob_list'], algorithm, function2, info[0], definePaths.baseOutPath)
+        # conf matrix
+        graphCurve(results['y_true'], results['y_pred_prob_list'], algorithm, function3, info[0], definePaths.baseOutPath, results['y_pred_categ_list'])
