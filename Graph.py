@@ -30,4 +30,5 @@ def graphCurve(y_true, y_pred_proba, algorithmName, functionName, fileName, base
 		
 	# plot
 	fig.savefig(filePath, dpi=fig.dpi)
+	plt.clf()
 	# plt.show()
